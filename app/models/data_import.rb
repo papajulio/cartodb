@@ -413,6 +413,10 @@ class DataImport < Sequel::Model
     [STATE_COMPLETE, STATE_FAILURE, STATE_STUCK].include?(state)
   end
 
+  def metadata_visualization
+    external_source_visualization || carto_geopkg_metadata_visualization
+  end
+
   private
 
   def carto_geopkg_metadata_visualization
