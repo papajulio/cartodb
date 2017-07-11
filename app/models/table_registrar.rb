@@ -35,17 +35,17 @@ module CartoDB
       table
     end
 
+    def external_visualization(data_import_id)
+      external_data_import = Carto::ExternalDataImport.find_by_data_import_id(data_import_id)
+      external_source = Carto::ExternalSource.find(external_data_import.external_source_id)
+      external_source.visualization
+    rescue ActiveRecord::RecordNotFound => _e
+    end
+
     def set_metadata_from_data_import_id(table, data_import_id)
-      external_data_import = ExternalDataImport.where(data_import_id: data_import_id).first
-      if external_data_import
-        external_source = CartoDB::Visualization::ExternalSource.where(id: external_data_import.external_source_id).first
-        if external_source
-          visualization = external_source.visualization
-          if visualization
-            table.description = visualization.description
-            table.set_tag_array(visualization.tags)
-          end
-        end
+      if external_visualization(data_import_id)
+        table.description = visualization.description
+        table.set_tag_array(visualization.tags)
       end
     rescue => e
       CartoDB.notify_exception(e)
