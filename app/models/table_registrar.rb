@@ -29,7 +29,7 @@ module CartoDB
     def build_table(table_name, data_import_id)
       table = @table_klass.new
       table.user_id = @user.id
-      table.instance_eval { self[:name] table_name }
+      table.instance_eval { self[:name] = table_name }
       table.migrate_existing_table = table_name
       table.data_import_id = data_import_id
       table
