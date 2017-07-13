@@ -39,6 +39,8 @@ module Carto
     has_many :layers_user_table
     has_many :layers, through: :layers_user_table
 
+    has_one :user_tokens, inverse_of: :user_table
+
     before_validation :set_default_table_privacy
 
     validates :user, presence: true
