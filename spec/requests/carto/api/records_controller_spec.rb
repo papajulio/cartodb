@@ -258,4 +258,40 @@ describe Carto::Api::RecordsController do
       end
     end
   end
+
+  describe 'user_token tests' do
+
+    before(:all) do
+      @user = FactoryGirl.create(:valid_user)
+    end
+
+    before(:each) do
+      bypass_named_maps
+      delete_user_data @user
+      @table = create_table(user_id: @user.id)
+      @user_token = create_user_token(user_table: @table, permissions: 'RW')
+    end
+
+    after(:all) do
+      bypass_named_maps
+      @user.destroy
+    end
+
+    let(:params) { { user_token: @user_token.user_token, table_id: @table.name, user_domain: @user.username } }
+
+    it "Insert a new row with user_token auth" do
+    end
+
+    it "Insert a new row with user_token auth wrong see it fails" do
+    end
+
+    it "Insert a new row with user_token auth and read_only_permissions fail" do
+    end
+
+    it "Get a row with user_token auth and read_only_permissions works" do
+    end
+
+    it "Get a row with user_token auth and read_only_permissions works" do
+    end
+
 end

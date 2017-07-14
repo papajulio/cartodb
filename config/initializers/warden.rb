@@ -224,6 +224,30 @@ Warden::Strategies.add(:api_key) do
   end
 end
 
+Warden::Strategies.add(:user_token) do
+  def valid?
+    params[:user_token].present? && params[:table_id].present? 
+  end
+
+  # We don't want to store a session and send a response cookie
+  def store?
+    false
+  end
+
+  def authenticate!
+    begin
+      if (user_token = params[:user_token]) && api_key.present? && (table_id = params[:table_id]) && table_id.present?
+	@user_table = Carto::UserTable.find(table.id)
+	return @user_table.user_token.is_valid?(user_token)
+      else
+        return fail!
+      end
+    rescue
+      return fail!
+    end
+  end
+end
+
 Warden::Strategies.add(:http_header_authentication) do
   include LoginEventTrigger
 

@@ -11,6 +11,7 @@ module Carto
                           api_key table_id oauth_token oauth_token_secret api_key user_domain }.freeze
 
       before_filter :set_start_time
+      before_filter :optional_user_token_authorization, only: [:show, :create, :update, :destroy]
       before_filter :load_user_table, only: [:show, :create, :update, :destroy]
       before_filter :read_privileges?, only: [:show]
       before_filter :write_privileges?, only: [:create, :update, :destroy]
@@ -84,7 +85,11 @@ module Carto
       end
 
       def write_privileges?
-        head(401) unless current_user && @user_table.visualization.writable_by?(current_user)
+        if params[:user_token].present? && @user_table.user_token.is_read_only?
+	  head(401)	
+	else
+          head(401) unless current_user && @user_table.visualization.writable_by?(current_user)
+	end
       end
     end
   end

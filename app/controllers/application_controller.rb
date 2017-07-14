@@ -203,6 +203,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def optional_user_token_authorization
+    if params[:user_token].present?
+      got_auth = authenticate(:user_token_authentication, :scope => CartoDB.extract_subdomain(request))
+      validate_session(current_user) if got_auth
+    end
+  end
+
   def not_authorized
     respond_to do |format|
       format.html do

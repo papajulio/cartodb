@@ -11,8 +11,8 @@ module Carto
       permissions == PERMISSIONS_READ_ONLY
     end
 
-    def is_valid?(user_token_passed, permissions_passed = PERMISSIONS_READ_ONLY)
-      user_token_passed == user_token && permissions.include? permissions_passed 
+    def is_valid?(user_token_passed)
+      user_token_passed == user_token
     end
 
   end

@@ -56,11 +56,7 @@ describe Carto::UserToken do
   end
 
   describe('#validate_user_token') do
-      it 'validate valid user_token for R for user_table for read_only return true' do
-      end
-      it 'validate valid user_token for R for user_table for read_write return false' do
-      end
-      it 'validate valid user_token for RW for user_table for read_write return true' do
+      it 'validate valid user_token for user_table return true' do
       end
       it 'validate invalid user_token return false' do
       end
